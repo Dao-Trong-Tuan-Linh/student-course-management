@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/student_course_management
+    username: postgres
+    password: tl02
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  access-token:
+    secret: mRJEc2xMbXlvb1I2VnpOY0p6SExsZzRQaWExOW1pQ2kwRlF1UXJ6bU0zNEl1MHhPeWdDV3prUGtrTHZuaDdDMg==
+    expiration: 3600000  # 1 hour in milliseconds
+  refresh-token:
+    secret: ZUlMMGhSV1RzdlQ1bURJem1OdUt5TnhhZ2Vjc0pFY2lRVUV2bWtXWkE2Q1dxU1ZRTVY0Z2Y3dE5pTWZjYjg4aw==
+    expiration: 86400000 # 24 hours in milliseconds
+
