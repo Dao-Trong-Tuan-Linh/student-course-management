@@ -18,8 +18,8 @@ spring:
 jwt:
   access-token:
     secret: mRJEc2xMbXlvb1I2VnpOY0p6SExsZzRQaWExOW1pQ2kwRlF1UXJ6bU0zNEl1MHhPeWdDV3prUGtrTHZuaDdDMg==
-    expiration: 3600000  # 1 hour in milliseconds
+    expiration: 86400000  # 24 hour in milliseconds
   refresh-token:
     secret: ZUlMMGhSV1RzdlQ1bURJem1OdUt5TnhhZ2Vjc0pFY2lRVUV2bWtXWkE2Q1dxU1ZRTVY0Z2Y3dE5pTWZjYjg4aw==
-    expiration: 86400000 # 24 hours in milliseconds
+    expiration: 604800000 # 7 days in milliseconds
 

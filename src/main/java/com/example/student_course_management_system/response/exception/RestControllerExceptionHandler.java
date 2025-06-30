@@ -10,13 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class RestControllerExceptionHandler {
-    public ResponseEntity<ApiResponse> resolveException(ApiException exception) {
-        String message = exception.getMessage();
-        HttpStatus status = exception.getStatus();
-
-        ApiResponse apiResponse = new ApiResponse(Boolean.FALSE,message);
-        return new ResponseEntity<>(apiResponse,status);
-    }
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiResponse> resolveException(BadRequestException exception) {
         ApiResponse apiResponse = exception.getApiResponse();
@@ -27,6 +20,12 @@ public class RestControllerExceptionHandler {
     public ResponseEntity<ApiResponse> resolveException(UnAuthorizedRequestException exception) {
         ApiResponse apiResponse = exception.getApiResponse();
         return new ResponseEntity<>(apiResponse,HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(NotFoundRequestException.class)
+    public ResponseEntity<ApiResponse> resolveException(NotFoundRequestException exception) {
+        ApiResponse apiResponse = exception.getApiResponse();
+        return new ResponseEntity<>(apiResponse,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InternalServerException.class)
