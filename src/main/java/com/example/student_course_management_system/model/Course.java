@@ -1,6 +1,8 @@
 package com.example.student_course_management_system.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -21,15 +23,15 @@ public class Course {
     @JoinColumn(name = "teacher_id",referencedColumnName = "id")
     private User teacher;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "genre_id",referencedColumnName = "id")
     private Genre genre;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "created_at",nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated_at",nullable = false,updatable = false)
     private LocalDateTime updatedAt;
 
