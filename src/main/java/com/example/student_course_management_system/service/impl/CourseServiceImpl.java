@@ -1,5 +1,7 @@
 package com.example.student_course_management_system.service.impl;
 
+import com.example.student_course_management_system.dto.course.CourseDto;
+import com.example.student_course_management_system.mapper.CourseMapper;
 import com.example.student_course_management_system.model.Course;
 import com.example.student_course_management_system.model.Genre;
 import com.example.student_course_management_system.model.User;
@@ -10,17 +12,27 @@ import com.example.student_course_management_system.repository.UserRepository;
 import com.example.student_course_management_system.request.course.CourseRequest;
 import com.example.student_course_management_system.response.common.ApiDataResponse;
 import com.example.student_course_management_system.response.common.ApiResponse;
+import com.example.student_course_management_system.response.common.PagedResponse;
 import com.example.student_course_management_system.response.exception.BadRequestException;
 import com.example.student_course_management_system.response.exception.NotFoundRequestException;
 import com.example.student_course_management_system.service.CourseService;
+import com.example.student_course_management_system.utils.AppConstants;
 import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class CourseServiceImpl implements CourseService {
+    private static String COURSE_ID = "id";
     @Autowired
     private UserRepository userRepository;
 
@@ -29,6 +41,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     private final Slugify slugify = Slugify.builder().build();
 
@@ -57,5 +72,20 @@ public class CourseServiceImpl implements CourseService {
         ApiResponse apiResponse = new ApiResponse(Boolean.TRUE,"Đã tạo khóa học mới thành công");
         ApiDataResponse apiDataResponse = new ApiDataResponse(apiResponse,newCourse);
         return new ResponseEntity<>(apiDataResponse, HttpStatus.CREATED);
+    }
+
+    @Override
+    public PagedResponse<CourseDto> getListService(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(Math.max(page - 1, 0),Math.max(size,10), Sort.Direction.DESC,COURSE_ID);
+        Page<Course> courses = this.courseRepository.findListBySearch(pageable,search);
+        if(courses.getNumberOfElements() == 0) {
+            return new PagedResponse<>(Collections.emptyList(),courses.getNumber() + 1,
+                    courses.getSize(),courses.getTotalElements()
+                    ,courses.getTotalPages());
+        }
+        Page<CourseDto> dtoPage = courses.map(courseMapper::toDto);
+        return new PagedResponse<>(dtoPage.getContent(),courses.getNumber() + 1,
+                courses.getSize(),courses.getTotalElements()
+                ,courses.getTotalPages());
     }
 }
