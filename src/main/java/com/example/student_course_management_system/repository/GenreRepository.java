@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface GenreRepository extends JpaRepository<Genre,Long> {
@@ -18,4 +19,6 @@ public interface GenreRepository extends JpaRepository<Genre,Long> {
                    OR LOWER(g.name) LIKE LOWER(CONCAT('%', :name, '%')))
            """)
     List<Genre> findListGenres(String name);
+
+    long countByIdIn(Collection<Long> ids);
 }

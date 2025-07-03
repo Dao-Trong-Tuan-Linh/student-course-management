@@ -28,8 +28,8 @@ public class GenreController {
         return this.genreService.getListService(name);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiDataResponse> updateController(
             @PathVariable Long id,
             @Valid @RequestBody GenreRequest genreRequest
@@ -37,8 +37,9 @@ public class GenreController {
         return this.genreService.updateService(id,genreRequest);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> deleteController(@PathVariable Long id) {
         return this.genreService.deleteService(id);
     }
